@@ -4,7 +4,7 @@
 
 Transient menu for the PnPM package manager.
 
-[[./pnpm-menu.gif]]
+[[./pnpm-menu-demo.gif]]
 
 * Table of Contents                                       :TOC_2_gh:QUOTE:
 #+BEGIN_QUOTE

@@ -1,0 +1,71 @@
+#+OPTIONS: ^:nil tags:nil num:nil
+
+* About
+
+Transient menu for the PnPM package manager.
+
+[[./pnpm-menu.gif]]
+
+* Table of Contents                                       :TOC_2_gh:QUOTE:
+#+BEGIN_QUOTE
+- [[#about][About]]
+- [[#requirements][Requirements]]
+- [[#installation][Installation]]
+  - [[#with-use-package-and-straightel][With use-package and straight.el]]
+  - [[#manual-installation][Manual installation]]
+- [[#usage][Usage]]
+  - [[#transient][Transient]]
+#+END_QUOTE
+
+* Requirements
+
+| Name        | Version |
+|-------------+---------|
+| Emacs       |    28.1 |
+| ~transient~ |   0.7.1 |
+| [[https://github.com/KarimAziev/npmjs][npmjs]]       |  Latest |
+
+
+* Installation
+
+Note, this package requires [[https://github.com/KarimAziev/npmjs][npmjs]] to be installed.
+
+** With use-package and straight.el
+
+#+begin_src elisp :eval no
+(use-package npmjs
+  :straight (pnpm-menu
+             :repo "KarimAziev/pnpm-menu"
+             :type git
+             :host github))
+
+(use-package pnpm-menu
+  :straight (pnpm-menu
+             :repo "KarimAziev/pnpm-menu"
+             :type git
+             :host github))
+#+end_src
+
+** Manual installation
+
+Download the source code and put it wherever you like, e.g. into =~/.emacs.d/pnpm-menu/=
+
+#+begin_src shell :eval no
+git clone https://github.com/KarimAziev/npmjs.git ~/.emacs.d/npmjs/
+git clone https://github.com/KarimAziev/pnpm-menu.git ~/.emacs.d/pnpm-menu/
+#+end_src
+
+Add the downloaded directory to the load path:
+
+#+begin_src elisp :eval no
+(add-to-list 'load-path "~/.emacs.d/npmjs/")
+(add-to-list 'load-path "~/.emacs.d/pnpm-menu/")
+(require 'pnpm-menu)
+#+end_src
+
+* Usage
+
+** Transient
+
+**** ~pnpm-menu~
+Manage dependencies, review them, run scripts, and handle the pnpm store.

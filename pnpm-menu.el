@@ -33,6 +33,34 @@
 (require 'transient)
 (require 'npmjs)
 
+(defvar pnpm-menu-argument-regex (rx (seq bol
+                                          (zero-or-more " ")
+                                          (opt (group
+                                                (group "-"
+                                                       (any "a-z"))
+                                                ", "))
+                                          (group "--"
+                                                 (opt (group
+                                                       (opt "[")
+                                                       (group
+                                                        (one-or-more
+                                                         (any "a-z" "_|-"))
+                                                        "-")
+                                                       "]"))
+                                                 (one-or-more
+                                                  (any "a-z" "_-")))
+                                          (opt (group
+                                                (any " =")
+                                                (group
+                                                 (one-or-more
+                                                  (not (any " ")))))))))
+
+(defvar pnpm-menu-argument-group-title-regex (rx (seq bol
+                                                      (group
+                                                       (any "a-z")
+                                                       (one-or-more nonl))
+                                                      ":" eol)))
+
 (defun pnpm-menu--arg-description-at-point ()
   "Concatenate and return argument descriptions from the current point onward."
   (let* ((descr-parts
@@ -520,22 +548,19 @@ Argument DESCRIPTION is a string containing the choices separated by |."
 
 (defun pnpm-menu--parse-args ()
   "Parse command-line arguments into structured groups and commands."
-  (let ((group-title-regex "^\\([a-z][^\n]+\\):$")
-        (command-regex
-         "^[ ]*\\(\\(-[a-z]\\),[ ]\\)?\\(--\\(\\[?\\([a-z_|-]+-\\)\\]\\)?[a-z_-]+\\)\\([ =]\\([^ ]+\\)\\)?")
-        (groups)
+  (let ((groups)
         (used-keys (list "q")))
     (let ((case-fold-search t))
       (while (progn (skip-chars-forward "\n")
                     (and
-                     (not (looking-at group-title-regex))
+                     (not (looking-at pnpm-menu-argument-group-title-regex))
                      (zerop (forward-line 1)))))
       (while (progn (skip-chars-forward "\n")
-                    (looking-at group-title-regex))
+                    (looking-at pnpm-menu-argument-group-title-regex))
         (when-let ((group-title (match-string-no-properties 1)))
           (forward-line 1)
           (let ((commands))
-            (while (looking-at command-regex)
+            (while (looking-at pnpm-menu-argument-regex)
               (let ((short (match-string-no-properties 2))
                     (argument  (match-string-no-properties 3))
                     (no-option (match-string-no-properties 4))

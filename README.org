@@ -14,7 +14,6 @@ Transient menu for the PnPM package manager.
   - [[#with-use-package-and-straightel][With use-package and straight.el]]
   - [[#manual-installation][Manual installation]]
 - [[#usage][Usage]]
-  - [[#transient][Transient]]
 #+END_QUOTE
 
 * Requirements
@@ -65,7 +64,10 @@ Add the downloaded directory to the load path:
 
 * Usage
 
-** Transient
+Run ~M-x pnpm-menu~ to open the transient menu with available PNPM commands.
 
-**** ~pnpm-menu~
-Manage dependencies, review them, run scripts, and handle the pnpm store.
+Most of the =pnpm= prefix commands provide access to the documentation of =pnpm= using =eww=. From the active transient, you can press =C-h= (this is the =transient-help= command) and either type the key of the currently visible suffixes or press =C-h= again to see the documentation of the current =pnpm= command.
+
+[[./pnpm-menu-help.gif]]
+
+After typing a key, the stack of transient states is suspended, and information about the suffix command is shown instead. Typing =q= in the help buffer buries that buffer and resumes the transient state.

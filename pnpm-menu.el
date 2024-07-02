@@ -688,6 +688,10 @@ Optional argument SPECIFIER is an extra string to be shown in the help buffer."
    (setq npmjs-current-scripts (npmjs-get-scripts-suffixes))
    (setq pnpm-menu-run-args
          (pnpm-menu--eval-command-args "run"
+                                       (npmjs-parse-help-with-output
+                                           (shell-command-to-string
+                                            (concat "pnpm help " "run"))
+                                         (buffer-string))
                                        (mapcar #'car npmjs-current-scripts)))
    (transient-setup 'pnpm-menu-run)))
 

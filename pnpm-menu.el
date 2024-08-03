@@ -163,12 +163,15 @@ of the command in the menu."
                    (not (any " "))))))))
   "Regular expression for matching pnpm command-line arguments.")
 
+
 (defconst pnpm-menu-argument-group-title-regex
   (rx (seq bol
            (group
             (any "a-z")
             (one-or-more nonl))
-           ":" eol))
+           ":"
+           (zero-or-more " ")
+           eol))
   "Regular expression matching argument group titles.")
 
 (defconst pnpm-menu--command-regex
@@ -918,8 +921,10 @@ Argument DESCR is the description of the command."
         (usage)
         (used-keys '("q")))
     (let ((case-fold-search t))
-      (while (and (not (looking-at pnpm-menu-argument-group-title-regex))
-                  (zerop (forward-line 1))))
+      (while (progn (skip-chars-forward "\n")
+                    (and
+                     (not (looking-at pnpm-menu-argument-group-title-regex))
+                     (zerop (forward-line 1)))))
       (setq usage (buffer-substring-no-properties (point-min) (point)))
       (while
           (progn

@@ -65,7 +65,7 @@ contextual help when managing dependencies with pnpm."
                                               (or
                                                (npmjs-get-package-json-script
                                                 'start)
-                                               (when-let
+                                               (when-let*
                                                    ((proj
                                                      (npmjs-get-project-root)))
                                                  (file-exists-p
@@ -636,7 +636,7 @@ Optional argument SPECIFIER is an extra string to be shown in the help buffer."
                (pnpm-menu--browse-url "https://pnpm.io/cli/run"))
   [[:description
     (lambda ()
-      (if-let ((name (npmjs-project-display-name)))
+      (if-let* ((name (npmjs-project-display-name)))
           (format "Run script (%s)" name)
         "Run script"))
     :setup-children
@@ -729,7 +729,7 @@ Argument DESCRIPTION is a string containing the choices separated by |."
                      (zerop (forward-line 1)))))
       (while (progn (skip-chars-forward "\n")
                     (looking-at pnpm-menu-argument-group-title-regex))
-        (when-let ((group-title (match-string-no-properties 1)))
+        (when-let* ((group-title (match-string-no-properties 1)))
           (forward-line 1)
           (let ((commands))
             (while (looking-at pnpm-menu-argument-regex)
@@ -932,7 +932,7 @@ Argument DESCR is the description of the command."
                        (looking-back "\n" 0))
               (re-search-forward "[\n]" nil t 1))
             (looking-at pnpm-menu-argument-group-title-regex))
-        (when-let ((group-title (match-string-no-properties 1)))
+        (when-let* ((group-title (match-string-no-properties 1)))
           (forward-line 1)
           (let ((commands)
                 (case-fold-search nil))
